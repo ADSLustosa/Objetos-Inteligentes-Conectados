@@ -1,46 +1,215 @@
+#include <Arduino.h>
+#include <Wire.h>
+#include "LiquidCrystal_I2C.h"  // versão manual para Wokwi
+#include <WiFi.h>
+#include <PubSubClient.h>
+#include "DHT.h"
 
-This directory is intended for project specific (private) libraries.
-PlatformIO will compile them to static libraries and link into the executable file.
+// ========================
+// DETECÇÃO AUTOMÁTICA
+// ========================
+#ifdef WOKWI
+  #define SIMULADOR true
+#else
+  #define SIMULADOR false
+#endif
 
-The source code of each library should be placed in a separate directory
-("lib/your_library_name/[Code]").
+// ========================
+// Wi-Fi
+// ========================
+#if SIMULADOR
+const char* WIFI_SSID = "Wokwi-GUEST";
+const char* WIFI_PASS = "";
+#else
+const char* WIFI_SSID = "SEU_WIFI";
+const char* WIFI_PASS = "SUA_SENHA";
+#endif
 
-For example, see the structure of the following example libraries `Foo` and `Bar`:
+// ========================
+// MQTT
+// ========================
+const char* MQTT_HOST = "test.mosquitto.org";
+const int   MQTT_PORT = 1883;
+const char* MQTT_CLIENT_ID = "casaviva-esp32-universal";
 
-|--lib
-|  |
-|  |--Bar
-|  |  |--docs
-|  |  |--examples
-|  |  |--src
-|  |     |- Bar.c
-|  |     |- Bar.h
-|  |  |- library.json (optional. for custom build options, etc) https://docs.platformio.org/page/librarymanager/config.html
-|  |
-|  |--Foo
-|  |  |- Foo.c
-|  |  |- Foo.h
-|  |
-|  |- README --> THIS FILE
-|
-|- platformio.ini
-|--src
-   |- main.c
+WiFiClient wifiClient;
+PubSubClient mqttClient(wifiClient);
 
-Example contents of `src/main.c` using Foo and Bar:
-```
-#include <Foo.h>
-#include <Bar.h>
+// ========================
+// TÓPICOS MQTT
+// ========================
+const char* TOPIC_T_DHT   = "casaviva/sala/sensor/dht22";
+const char* TOPIC_T_SOM   = "casaviva/sala/sensor/ky037";
+const char* TOPIC_T_GAS   = "casaviva/sala/sensor/mq135";
+const char* TOPIC_CMD_LED = "casaviva/sala/cmd/led";
+const char* TOPIC_ST_LED  = "casaviva/sala/estado/led";
 
-int main (void)
-{
-  ...
+// ========================
+// PINOS
+// ========================
+namespace Pins {
+  constexpr uint8_t DHT_DATA   = 4;
+  constexpr uint8_t KY037_AOUT = 34;
+  constexpr uint8_t MQ135_AOUT = 35;
+
+  constexpr uint8_t I2C_SDA = 21;
+  constexpr uint8_t I2C_SCL = 22;
+
+  constexpr uint8_t LED_R = 25;
+  constexpr uint8_t LED_G = 26;
+  constexpr uint8_t LED_B = 27;
 }
 
-```
+// ========================
+// OBJETOS
+// ========================
+DHT dht(Pins::DHT_DATA, DHT22);
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-The PlatformIO Library Dependency Finder will find automatically dependent
-libraries by scanning project source files.
+float tempC, umid;
+int som_adc, gas_adc;
 
-More information about PlatformIO Library Dependency Finder
-- https://docs.platformio.org/page/librarymanager/ldf.html
+// ========================
+// FUNÇÃO DE LED RGB
+// ========================
+void setRgb(uint8_t r, uint8_t g, uint8_t b) {
+  analogWrite(Pins::LED_R, r);
+  analogWrite(Pins::LED_G, g);
+  analogWrite(Pins::LED_B, b);
+}
+
+// ========================
+// MQTT CALLBACK
+// ========================
+void mqttCallback(char* topic, byte* payload, unsigned int len) {
+  String msg;
+  for (unsigned i=0;i<len;i++) msg += (char)payload[i];
+
+  if (String(topic) == TOPIC_CMD_LED) {
+    int r=0,g=0,b=0;
+
+    int ir = msg.indexOf("\"r\":");
+    int ig = msg.indexOf("\"g\":");
+    int ib = msg.indexOf("\"b\":");
+
+    if (ir>=0) r = msg.substring(ir+4).toInt();
+    if (ig>=0) g = msg.substring(ig+4).toInt();
+    if (ib>=0) b = msg.substring(ib+4).toInt();
+
+    setRgb(r,g,b);
+
+    char buf[50];
+    snprintf(buf,sizeof(buf),"{\"r\":%d,\"g\":%d,\"b\":%d}", r,g,b);
+    mqttClient.publish(TOPIC_ST_LED, buf, true);
+  }
+}
+
+// ========================
+// WIFI
+// ========================
+void connectWifi() {
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(150);
+  }
+
+  Serial.print("WiFi conectado: ");
+  Serial.println(WiFi.localIP());
+}
+
+// ========================
+// MQTT
+// ========================
+void connectMqtt() {
+  mqttClient.setServer(MQTT_HOST, MQTT_PORT);
+  mqttClient.setCallback(mqttCallback);
+
+  while (!mqttClient.connected()) {
+    mqttClient.connect(MQTT_CLIENT_ID);
+    delay(200);
+  }
+
+  mqttClient.subscribe(TOPIC_CMD_LED);
+}
+
+// ========================
+// LCD
+// ========================
+void lcdAmostras() {
+  lcd.clear();
+  
+  lcd.setCursor(0,0);
+  lcd.print("T:");
+  lcd.print(String(tempC,1));
+  lcd.print("C U:");
+  lcd.print(String((int)umid));
+
+  lcd.setCursor(0,1);
+  lcd.print("G:");
+  lcd.print(String(gas_adc/100));
+  lcd.print(" S:");
+  lcd.print(String(som_adc/100));
+}
+
+// ========================
+// SETUP
+// ========================
+void setup() {
+  Serial.begin(115200);
+
+  pinMode(Pins::LED_R, OUTPUT);
+  pinMode(Pins::LED_G, OUTPUT);
+  pinMode(Pins::LED_B, OUTPUT);
+
+  Wire.begin(Pins::I2C_SDA, Pins::I2C_SCL);
+  lcd.init();
+  lcd.backlight();
+
+  lcd.setCursor(0,0);
+#if SIMULADOR
+  lcd.print("CasaViva - Simulador");
+#else
+  lcd.print("CasaViva - Hardware");
+#endif
+  delay(1500);
+
+  dht.begin();
+
+  connectWifi();
+  connectMqtt();
+}
+
+// ========================
+// LOOP
+// ========================
+void loop() {
+  if (!mqttClient.connected()) connectMqtt();
+  mqttClient.loop();
+
+  tempC = dht.readTemperature();
+  umid  = dht.readHumidity();
+
+  som_adc = analogRead(Pins::KY037_AOUT);
+  gas_adc = analogRead(Pins::MQ135_AOUT);
+
+  char buf[64];
+  snprintf(buf,sizeof(buf),"{\"temp\":%.1f,\"umid\":%.1f}", tempC, umid);
+  mqttClient.publish(TOPIC_T_DHT, buf);
+
+  snprintf(buf,sizeof(buf),"{\"adc\":%d}", som_adc);
+  mqttClient.publish(TOPIC_T_SOM, buf);
+
+  snprintf(buf,sizeof(buf),"{\"adc\":%d}", gas_adc);
+  mqttClient.publish(TOPIC_T_GAS, buf);
+
+  lcdAmostras();
+
+  if (gas_adc > 2500)      setRgb(255,0,0);
+  else if (som_adc > 2500) setRgb(255,255,0);
+  else if (tempC > 30)     setRgb(255,50,0);
+  else                     setRgb(0,255,0);
+
+  delay(1500);
+}

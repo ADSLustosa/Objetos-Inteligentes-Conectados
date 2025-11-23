@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "author": "CasaViva IoT",
+  "editor": "wokwi",
+
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": -20,
+      "left": -20,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht",
+      "top": -120,
+      "left": -20,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-lcd1602",
+      "id": "lcd",
+      "top": 100,
+      "left": -40,
+      "attrs": { "i2c": "yes", "addr": "0x27" }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot1",
+      "top": -120,
+      "left": 140,
+      "attrs": { "value": "0.5" }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot2",
+      "top": -120,
+      "left": 260,
+      "attrs": { "value": "0.5" }
+    },
+    {
+      "type": "wokwi-rgb-led",
+      "id": "rgb",
+      "top": 110,
+      "left": 200,
+      "attrs": { "common": "cathode" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rR",
+      "top": 100,
+      "left": 260,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rG",
+      "top": 130,
+      "left": 260,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rB",
+      "top": 160,
+      "left": 260,
+      "attrs": { "value": "220" }
+    }
+  ],
+
+  "connections": [
+    ["dht:VCC", "esp:3V3", "red"],
+    ["dht:GND", "esp:GND.1", "black"],
+    ["dht:SDA", "esp:4", "yellow"],
+
+    ["lcd:GND", "esp:GND.2", "black"],
+    ["lcd:VCC", "esp:5V", "red"],
+    ["lcd:SDA", "esp:21", "green"],
+    ["lcd:SCL", "esp:22", "blue"],
+
+    ["pot1:1", "esp:3V3", "red"],
+    ["pot1:2", "esp:34", "orange"],
+    ["pot1:3", "esp:GND.1", "black"],
+
+    ["pot2:1", "esp:3V3", "red"],
+    ["pot2:2", "esp:35", "pink"],
+    ["pot2:3", "esp:GND.1", "black"],
+
+    ["rgb:R", "rR:1", "red"],
+    ["rR:2", "esp:25", "red"],
+
+    ["rgb:G", "rG:1", "green"],
+    ["rG:2", "esp:26", "green"],
+
+    ["rgb:B", "rB:1", "blue"],
+    ["rB:2", "esp:27", "blue"],
+
+    ["rgb:COM", "esp:GND.3", "black"]
+  ]
+}

@@ -10,8 +10,8 @@
 // ======================
 
 // Wi-Fi do Wokwi (obrigatório)
-constexpr const char* WIFI_SSID = "brisa-2404404";
-constexpr const char* WIFI_PASS = "64k63fsy";
+constexpr const char* WIFI_SSID = "Wokwi-GUEST";
+constexpr const char* WIFI_PASS = "";
 
 // MQTT
 constexpr const char* MQTT_HOST      = "test.mosquitto.org";
@@ -54,15 +54,6 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
 
-// PWM (LEDC)
-namespace Ledc {
-  constexpr uint8_t CH_R = 0;
-  constexpr uint8_t CH_G = 1;
-  constexpr uint8_t CH_B = 2;
-  constexpr uint32_t FREQ = 5000;
-  constexpr uint8_t RES  = 8;
-}
-
 // Dados dos sensores
 struct Amostras {
   float tempC = NAN;
@@ -71,7 +62,7 @@ struct Amostras {
   int   gas   = 0;
 } s;
 
-uint32_t lastSensorsMs = 0;
+uint32_t lastSensorsMs  = 0;
 uint32_t lastMqttLoopMs = 0;
 
 // ======================
@@ -79,9 +70,9 @@ uint32_t lastMqttLoopMs = 0;
 // ======================
 
 void setRgb(uint8_t r, uint8_t g, uint8_t b) {
-  ledcWrite(Ledc::CH_R, r);
-  ledcWrite(Ledc::CH_G, g);
-  ledcWrite(Ledc::CH_B, b);
+  analogWrite(Pins::LED_R, r);
+  analogWrite(Pins::LED_G, g);
+  analogWrite(Pins::LED_B, b);
 }
 
 void publicaEstadoLed(uint8_t r, uint8_t g, uint8_t b) {
@@ -100,11 +91,15 @@ void lcdSplash() {
 
 void lcdAmostras() {
   lcd.clear();
+
+  float temp  = isnan(s.tempC) ? -1.0f : s.tempC;
+  int   umidV = isnan(s.umid) ? -1 : (int)s.umid;
+
   lcd.setCursor(0, 0);
   lcd.print("T:");
-  lcd.print(isnan(s.tempC) ? -1 : s.tempC, 1);
+  lcd.print(String(temp, 1));
   lcd.print("C U:");
-  lcd.print(isnan(s.umid) ? -1 : (int)s.umid);
+  lcd.print(String(umidV));
   lcd.print("%");
 
   lcd.setCursor(0, 1);
@@ -151,9 +146,6 @@ void connectWifi() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(250);
   }
-
-  Serial.print("WiFi OK, IP = ");
-  Serial.println(WiFi.localIP());
 }
 
 // ======================
@@ -189,7 +181,8 @@ void publicarSensores() {
   char payload[96];
 
   if (!isnan(s.tempC) && !isnan(s.umid)) {
-    snprintf(payload, sizeof(payload), "{\"temp_c\":%.1f,\"umid_pct\":%.0f}", s.tempC, s.umid);
+    snprintf(payload, sizeof(payload),
+             "{\"temp_c\":%.1f,\"umid_pct\":%.0f}", s.tempC, s.umid);
     mqttClient.publish(TOPIC_T_DHT, payload);
   }
 
@@ -214,19 +207,49 @@ void setup() {
 
   dht.begin();
 
-  ledcSetup(Ledc::CH_R, Ledc::FREQ, Ledc::RES);
-  ledcSetup(Ledc::CH_G, Ledc::FREQ, Ledc::RES);
-  ledcSetup(Ledc::CH_B, Ledc::FREQ, Ledc::RES);
-  ledcAttachPin(Pins::LED_R, Ledc::CH_R);
-  ledcAttachPin(Pins::LED_G, Ledc::CH_G);
-  ledcAttachPin(Pins::LED_B, Ledc::CH_B);
+  // LED — versão compatível com Wokwi
+  pinMode(Pins::LED_R, OUTPUT);
+  pinMode(Pins::LED_G, OUTPUT);
+  pinMode(Pins::LED_B, OUTPUT);
 
   connectWifi();
   connectMqtt();
 
+  // =========================
+  // TESTE AUTOMÁTICO DO LED RGB
+  // =========================
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Testando LED...");
+  lcd.setCursor(0,1);
+  lcd.print("RGB sequencial");
+
+  setRgb(255, 0, 0);   // Vermelho
+  delay(800);
+
+  setRgb(0, 255, 0);   // Verde
+  delay(800);
+
+  setRgb(0, 0, 255);   // Azul
+  delay(800);
+
+  setRgb(255, 255, 255);   // Branco
+  delay(800);
+
+  setRgb(0, 0, 0);     // Desliga
+  delay(300);
+
+  lcd.clear();
+  lcd.print("CasaViva IoT");
+  lcd.setCursor(0,1);
+  lcd.print("Iniciando...");
+  delay(1500);
+
+  // Timers
   lastSensorsMs = millis();
   lastMqttLoopMs = millis();
 }
+
 
 void loop() {
   connectWifi();
