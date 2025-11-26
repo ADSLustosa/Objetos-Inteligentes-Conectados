@@ -1,9 +1,3 @@
-
----
-
-# 📂 **/docs/hardware/LCD_I2C.md**
-
-```md
 # Display LCD 16x2 com Interface I2C
 
 ## Descrição
