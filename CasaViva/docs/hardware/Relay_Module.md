@@ -1,9 +1,3 @@
-
----
-
-# 📂 **/docs/hardware/Joystick.md**
-
-```md
 # Joystick Analógico – Controle do Sistema
 
 ## Descrição
