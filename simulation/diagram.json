@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "author": "CasaViva IoT",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": -60, "left": 0 },
+
+    { "type": "wokwi-dht22", "id": "dht", "top": 90, "left": 240, "rotate": 90 },
+
+    { "type": "wokwi-gas-sensor-mq135", "id": "mq", "top": -220, "left": 220 },
+
+    { "type": "wokwi-microphone-sound-sensor", "id": "sound", "top": 20, "left": 240 },
+
+    { "type": "wokwi-relay-module", "id": "relay1", "top": 70, "left": -140, "rotate": 180 },
+
+    { "type": "wokwi-led-rgb", "id": "rgb1", "top": 0, "left": 150, "attrs": { "common": "cathode" } },
+
+    { "type": "wokwi-potentiometer", "id": "pot", "top": -40, "left": -95, "rotate": 270 },
+
+    { "type": "wokwi-lcd1602", "id": "lcd1", "top": -70, "left": 290, "attrs": { "pins": "i2c" } },
+
+    { "type": "wokwi-analog-joystick", "id": "joystick1", "top": 170, "left": 10, "rotate": 180 },
+
+    { "type": "wokwi-resistor", "id": "rR", "top": 10, "left": 210, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "rG", "top": 25, "left": 210, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "rB", "top": 40, "left": 210, "attrs": { "value": "220" } }
+  ],
+
+  "connections": [
+
+    ["lcd1:GND", "esp:GND.1", "black"],
+    ["lcd1:VCC", "esp:3V3", "red"],
+    ["lcd1:SDA", "esp:D21", "green"],
+    ["lcd1:SCL", "esp:D22", "purple"],
+
+    ["dht:VCC", "esp:3V3", "red"],
+    ["dht:GND", "esp:GND.1", "black"],
+    ["dht:SDA", "esp:D4", "yellow"],
+
+    ["mq:VCC", "esp:3V3", "red"],
+    ["mq:GND", "esp:GND.2", "black"],
+    ["mq:AOUT", "esp:D33", "green"],
+
+    ["sound:VCC", "esp:3V3", "red"],
+    ["sound:GND", "esp:GND.2", "black"],
+    ["sound:OUT", "esp:D25", "orange"],
+
+    ["pot:VCC", "esp:3V3", "red"],
+    ["pot:GND", "esp:GND.2", "black"],
+    ["pot:SIG", "esp:D34", "green"],
+
+    ["joystick1:VCC", "esp:3V3", "red"],
+    ["joystick1:GND", "esp:GND.2", "black"],
+    ["joystick1:VERT", "esp:D32", "cyan"],
+    ["joystick1:SEL", "esp:D14", "blue"],
+
+    ["relay1:VCC", "esp:VIN", "red"],
+    ["relay1:GND", "esp:GND.2", "black"],
+    ["relay1:IN", "esp:D27", "green"],
+
+    ["rgb1:COM", "esp:GND.1", "black"],
+
+    ["rgb1:R", "rR:1", "red"],
+    ["rR:2", "esp:D2", "red"],
+
+    ["rgb1:G", "rG:1", "green"],
+    ["rG:2", "esp:D26", "green"],
+
+    ["rgb1:B", "rB:1", "blue"],
+    ["rB:2", "esp:D5", "blue"]
+  ]
+}
