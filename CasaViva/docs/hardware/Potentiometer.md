@@ -1,5 +1,9 @@
 # Potenciômetro – Ajuste de Threshold
 
+<p align="center">
+  <img src="../assets/Potentiometer.jpg" width="260">
+</p>
+
 ## Descrição
 O potenciômetro ajusta dinamicamente o limite ambiental para o MQ-135.
 
