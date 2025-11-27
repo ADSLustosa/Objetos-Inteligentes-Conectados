@@ -1,7 +1,7 @@
 # Display LCD com Interface I2C
 
 <p align="center">
-  <img src="../assets/LCD_I2C.jpeg" width="280">
+  <img src="../assets/LCD_I2C.jpeg" width="300">
 </p>
 
 ## Descrição
