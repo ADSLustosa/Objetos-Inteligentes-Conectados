@@ -26,7 +26,8 @@ O LCD apresenta em tempo real:
 - Modo ECO
 
 ## Código Base
-    ```cpp
+```
     LiquidCrystal_I2C lcd(0x27, 16, 2);
     lcd.begin(16, 2);
     lcd.print("CasaViva IoT");
+```

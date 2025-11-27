@@ -1,91 +1,116 @@
-# Arquitetura Geral do Sistema CasaViva IoT
+# Arquitetura Geral do Sistema – CasaViva IoT
 
-## Visão Geral
-A arquitetura do CasaViva IoT segue um modelo distribuído baseado em:
-- Dispositivo embarcado (ESP32)
-- Barramento de telemetria MQTT
-- Camada de nuvem (HiveMQ ou AWS IoT)
-- Opcional: Alexa Smart Home Skill + AWS Lambda
-- Aplicações clientes (MQTTX, dashboards, mobile)
-
-A comunicação é orientada a eventos e utiliza o padrão Publish/Subscribe.
+O CasaViva IoT foi projetado seguindo princípios modernos de arquitetura orientada a eventos, baixo acoplamento e escalabilidade. Ele combina sensores físicos, firmware embarcado, comunicação MQTT e integração com assistentes de voz (Alexa).
 
 ---
 
-## Componentes Principais
+# 🌐 Visão Geral da Arquitetura
 
-### 1. ESP32 – Dispositivo IoT
-Responsável por:
-- Aquisição de dados dos sensores
-- Processamento embarcado
-- Publicação MQTT
-- Recepção de comandos MQTT para atuadores
-- Interface com o usuário via LCD e joystick
-- Sinalização de status com LED RGB
-
-### 2. Broker MQTT
-O projeto pode operar em dois modos:
-- **HiveMQ Public Broker**
-- **AWS IoT Core (modo seguro, TLS)**
-
-Ambos seguem a estrutura de tópicos:
-    /CasaViva/temperatura
-    /CasaViva/umidade
-    /CasaViva/qualidade_ar
-    /CasaViva/ruido
-    /CasaViva/relay
-
-
-### 3. Consumidores MQTT
-- Aplicativos como MQTTX
-- Dashboards IoT locais
-- Node-RED
-- Alexa via AWS Lambda (modo avançado)
-
----
-
-## Diagrama Geral em Alto Nível (Mermaid)
-
-```mermaid
+```
 flowchart TD
+Sensores[Sensores<br>DHT22, MQ-135, KY-037] --> ESP32
+Joystick[Joystick & Potenciômetro] --> ESP32
+LCD[LCD 16x2 I2C] --> ESP32
+LED[LED RGB] --> ESP32
 
-    ESP[ESP32<br>CasaViva Firmware] -->|Publica Telemetria| MQTT[(Broker MQTT)]
-    MQTT --> Consumer1[MQTTX<br>Dashboard]
-    MQTT --> Lambda[AWS Lambda<br>Skill Backend]
-    Lambda --> Alexa[Amazon Alexa<br>Smart Home]
+ESP32 -->|Publica Telemetria| MQTT[(Broker MQTT)]
+MQTT --> MQTTX[MQTTX Dashboard]
+MQTT --> NodeRED[Node-RED]
+MQTT --> Alexa[AWS Lambda + Smart Home Skill]
 
-    ESP <-->|Comandos ON/OFF| MQTT
+MQTT -->|Comandos de Ação| ESP32
+ESP32 --> Relay[Relé AC]
+```
 
-## Características Arquiteturais
+# ⚙ Camadas do Sistema
 
-- Event-driven: atualizações de sensores disparam telemetria.
+O sistema é dividido em cinco camadas principais:
 
-- Baixo acoplamento: dispositivos independentes via MQTT.
+1. Camada de Sensoriamento
 
-- Fail-safe: reconexões automáticas de Wi-Fi e MQTT.
+Responsável por captar dados ambientais:
 
-- Escalável: novos sensores podem ser adicionados sem impacto.
+- DHT22: temperatura e umidade
 
-- Compatível com nuvem: suporta AWS IoT com certificates + TLS.
+- MQ-135: qualidade do ar
 
-## Padrões de Projeto Utilizados
+- KY-037: ruído
 
-- Publisher/Subscriber
+- Potenciômetro: threshold de poluição
 
-- State Machine (estado do LCD)
+2. Camada Embarcada (ESP32)
 
-- Driver Abstraction (camada de hardware separada do firmware principal)
+Responsável por:
 
-- Debounce lógico para joystick
+- Leitura dos sensores
 
-- Non-blocking loop (tempo baseado em millis())
+- Processamento leve
 
-## Requisitos Não Funcionais
+- Controle do LCD
 
-    | Categoria      | Detalhamento                                   |
-    | -------------- | ---------------------------------------------- |
-    | Performance    | telemetria a cada 5 segundos                   |
-    | Confiabilidade | reconexão automática Wi-Fi/MQTT                |
-    | Segurança      | suporte a TLS no modo AWS                      |
-    | Portabilidade  | código compatível com PlatformIO e Arduino IDE |
-    | Escalabilidade | novos sensores sem impacto estrutural          |
+- Operação do relé
+
+- Atualização do LED RGB
+
+- Lógica de estado ambiental
+
+- Publicação/consumo MQTT
+
+3. Camada de Comunicação (MQTT)
+
+Protocolo leve que garante:
+
+- Baixo consumo de energia
+
+- Baixa latência
+
+- Suporte a milhares de assinantes
+
+Broker utilizado:
+
+- HiveMQ Public
+
+- Ou AWS IoT (modo avançado seguro com TLS)
+
+4. Camada de Apresentação
+
+Inclui:
+
+- MQTTX para monitoramento
+
+- Dashboards (Node-RED)
+
+- LCD 16×2 embarcado
+
+- LED RGB como indicador
+
+5. Camada de Automação (Alexa / Nuvem)
+
+- Alexa Smart Home Skill
+
+- AWS Lambda
+
+- AWS IoT Core
+
+- Comandos de voz sincronizados com MQTT
+
+# 🧠 Padrões de Projeto Utilizados
+
+    | Padrão                        | Aplicação              |
+    | ----------------------------- | ---------------------- |
+    | **Publish/Subscribe**         | MQTT                   |
+    | **State Machine**             | Páginas do LCD         |
+    | **Debouncing lógico**         | Joystick               |
+    | **Driver Isolation**          | Abstração de sensores  |
+    | **Event-driven architecture** | Telemetria por gatilho |
+    | **Fail-safe reconnection**    | Wi-Fi e MQTT           |
+
+# 🚀 Possibilidades de Expansão
+
+- Adição de sensores (luminosidade, presença, CO₂ dedicado)
+
+- Dashboards WebSocket em tempo real
+
+- Controle remoto por app móvel
+
+- Machine learning local (TinyML)
