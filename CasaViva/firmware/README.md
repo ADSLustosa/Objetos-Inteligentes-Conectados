@@ -75,13 +75,13 @@ O arquivo **main.cpp** implementa:
 # ⚙️ 📄 platformio.ini – Configuração do Ambiente
 
 Este arquivo define:
-    | Configuração          | Propósito                                   |
-    | --------------------- | ------------------------------------------- |
-    | PlatformIO env        | Configurações para ESP32 DevKit V1          |
-    | Monitor speed         | Serial@115200 para debug                    |
-    | Type                  | Firmware C++17                              |
-    | Bibliotecas incluídas | DHT sensor, PubSubClient, LiquidCrystal I2C |
-    | Flags                 | Otimizações para estabilidade no Wokwi      |
+| Configuração          | Propósito                                   |
+| --------------------- | ------------------------------------------- |
+| PlatformIO env        | Configurações para ESP32 DevKit V1          |
+| Monitor speed         | Serial@115200 para debug                    |
+| Type                  | Firmware C++17                              |
+| Bibliotecas incluídas | DHT sensor, PubSubClient, LiquidCrystal I2C |
+| Flags                 | Otimizações para estabilidade no Wokwi      |
 
 Exemplo de estrutura:
 ```
