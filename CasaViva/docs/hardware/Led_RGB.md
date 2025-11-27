@@ -1,5 +1,9 @@
 # LED RGB – Indicador de Status Ambiental
 
+<p align="center">
+  <img src="../assets/LED_RGB.jpg" width="230">
+</p>
+
 ## Funções
 - Verde → ar saudável
 - Amarelo → atenção

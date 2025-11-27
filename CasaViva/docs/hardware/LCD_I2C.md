@@ -1,4 +1,8 @@
-# Display LCD 16x2 com Interface I2C
+# Display LCD com Interface I2C
+
+<p align="center">
+  <img src="../assets/LCD_I2C.jpeg" width="280">
+</p>
 
 ## Descrição
 O LCD apresenta em tempo real:

@@ -1,5 +1,9 @@
 # Joystick Analógico – Controle do Sistema
 
+<p align="center">
+  <img src="../assets/Joystick.png" width="260">
+</p>
+
 ## Descrição
   Joystick de dois eixos usado como interface para navegação do LCD e modos do sistema.
 
