@@ -1,7 +1,7 @@
 # Sensor DHT22 – Temperatura e Umidade
 
 ## Visão Geral
-O DHT22 é um sensor digital de temperatura e umidade amplamente utilizado em aplicações IoT devido à sua precisão e estabilidade. No projeto CasaViva, ele fornece dados ambientais em tempo real para análise, visualização no LCD e publicação via MQTT.
+O DHT22 é um sensor digital de temperatura e umidade amplamente utilizado em aplicações IoT devido à sua precisão e estabilidade. No **Projeto CasaViva**, ele fornece dados ambientais em tempo real para análise, visualização no LCD e publicação via MQTT.
 
 ## Especificações Técnicas
 | Propriedade           | Valor                           |
@@ -29,7 +29,8 @@ O DHT22 é um sensor digital de temperatura e umidade amplamente utilizado em ap
 - Identificação de falhas (quando `isnan()` retorna verdadeiro).
 
 ## Código Referência
-```cpp
+```
 DHT dht(4, DHT22);
 float t = dht.readTemperature();
 float h = dht.readHumidity();
+```

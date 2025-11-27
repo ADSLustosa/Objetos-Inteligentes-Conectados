@@ -15,5 +15,6 @@
 | COM  | GND    | — |
 
 ## Código Referência
-```cpp
+```
 analogWrite(26, valorVerde);
+```

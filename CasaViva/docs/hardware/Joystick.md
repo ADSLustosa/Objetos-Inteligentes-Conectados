@@ -20,6 +20,7 @@
   | GND      | GND |
 
 ## Código
-```cpp
+```
 int x = analogRead(35);
 int y = analogRead(32);
+```

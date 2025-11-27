@@ -4,7 +4,6 @@
 [![Status](https://img.shields.io/badge/status-ativo-brightgreen)]()
 [![ESP32](https://img.shields.io/badge/ESP32-supported-blue)]()
 [![MQTT](https://img.shields.io/badge/MQTT-HiveMQ%20Cloud-purple)]()
-[![License](https://img.shields.io/badge/license-MIT-lightgrey)]()
 
 ---
 
@@ -114,17 +113,17 @@ O sistema combina:
 
 # 🔧 Hardware Utilizado
 
-| Componente | Função |
-|-----------|--------|
-| **ESP32 DevKit V1** | núcleo do sistema |
-| **DHT22** | temperatura e umidade |
-| **MQ-135** | qualidade do ar |
-| **KY-037** | som/ruído |
-| **Potenciômetro 10k** | ajuste do limiar MQ |
-| **LCD 16x2 I2C** | interface física |
-| **Joystick analógico** | navegação do LCD |
-| **Relé 5V** | acionamento de carga |
-| **LED RGB** | alertas visuais |
+    | Componente | Função |
+    |-----------|--------|
+    | **ESP32 DevKit V1** | núcleo do sistema |
+    | **DHT22** | temperatura e umidade |
+    | **MQ-135** | qualidade do ar |
+    | **KY-037** | som/ruído |
+    | **Potenciômetro 10k** | ajuste do limiar MQ |
+    | **LCD 16x2 I2C** | interface física |
+    | **Joystick analógico** | navegação do LCD |
+    | **Relé 5V** | acionamento de carga |
+    | **LED RGB** | alertas visuais |
 
 # 💻 Software e Tecnologias
 
@@ -141,21 +140,22 @@ O sistema combina:
 # 📡 Integração MQTT
 
 ### Publicações:
-
+```
     /CasaViva/temperatura
     /CasaViva/umidade
     /CasaViva/qualidade_ar
-
+```
 
 ### Assinatura (controle):
-
+```
     /CasaViva/relay → ON / OFF
+```
 
 ### Exemplo (MQTTX):
-
+```
     Topic: /CasaViva/relay
     Payload: ON
-
+```
 
 ---
 
@@ -170,10 +170,11 @@ Fluxo planejado:
 5. ESP32 aciona relé / alertas / LCD  
 
 Exemplos:
+```
 - "Alexa, ligar o umidificador"  
 - "Alexa, como está a temperatura da sala?"  
 - "Alexa, como está o ar da casa?"  
-
+```
 ---
 
 # 📂 Estrutura do Repositório
@@ -203,7 +204,7 @@ Exemplos:
 ## ✔ 1. Wokwi (Simulação Completa)
 1. Abra o Wokwi  
 2. Cole `diagram.json`  
-3. Cole `main.cpp`  
+3. Cole `sketch.ino`  
 4. Clique em **Run**  
 5. Teste interativamente:
    - DHT22 (temperatura/umidade)
@@ -218,22 +219,22 @@ Exemplos:
 ## ✔ 2. MQTTX (Dashboard Local)
 
 **Conectar ao broker:**
-
+```
     broker.hivemq.com
     porta: 1883
-
+```
 
 **Assinar:**
-
+```
     /CasaViva/temperatura
     /CasaViva/umidade
     /CasaViva/qualidade_ar
-
+```
 
 **Publicar comando:**
-
+```
     /CasaViva/relay → ON
-
+```
 
 ---
 
@@ -265,10 +266,10 @@ O MQTTX atua como painel:
 # 📚 Documentação Completa
 
 Toda a documentação está em:
-
+```
     /docs/hardware
     /docs/software
-
+```
 
 Inclui:
 - arquitetura completa  
@@ -290,9 +291,9 @@ Inclui:
 
 # 👥 Autores
 
-| Nome | RA | Contato |
-|------|------|---------|
-| **João Pedro Lima Lustosa Amorim** | 10289920 | joaopedrolima.amorim1@mackenzista.com.br |
-| **Islas Matheus Coelho Azevedo** | 10423586 | islas.azevedo@mackenzista.com.br |
+    | Nome | RA | Contato |
+    |------|------|---------|
+    | **João Pedro Lima Lustosa Amorim** | 10289920 | joaopedrolima.amorim1@mackenzista.com.br |
+    | **Islas Matheus Coelho Azevedo** | 10423586 | islas.azevedo@mackenzista.com.br |
 
 ---

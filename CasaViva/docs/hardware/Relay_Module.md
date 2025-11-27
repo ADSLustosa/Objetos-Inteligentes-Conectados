@@ -20,6 +20,7 @@ Joystick de dois eixos usado como interface para navegação do LCD e modos do s
 | GND      | GND |
 
 ## Código
-```cpp
+```
 int x = analogRead(35);
 int y = analogRead(32);
+```
