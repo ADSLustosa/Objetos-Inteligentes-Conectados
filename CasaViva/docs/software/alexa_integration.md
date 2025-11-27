@@ -36,7 +36,7 @@ MQTTBroker --> ESP32[ESP32 CasaViva]
 
     Publicar no tópico:
     ```
-        /CasaViva/relay
+    /CasaViva/relay
     ```
 
 - Validar tokens / autenticação
