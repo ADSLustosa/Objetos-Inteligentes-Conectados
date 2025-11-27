@@ -9,12 +9,12 @@ O LCD apresenta em tempo real:
 - Estado Wi-Fi e MQTT
 
 ## Pinagem
-    | Pino LCD | ESP32 |
-    |----------|--------|
-    | GND      | GND |
-    | VCC      | 3V3 |
-    | SDA      | GPIO 21 |
-    | SCL      | GPIO 22 |
+| Pino LCD | ESP32 |
+|----------|--------|
+| GND      | GND |
+| VCC      | 3V3 |
+| SDA      | GPIO 21 |
+| SCL      | GPIO 22 |
 
 ## Biblioteca Usada
     LiquidCrystal_I2C
@@ -27,7 +27,7 @@ O LCD apresenta em tempo real:
 
 ## Código Base
 ```
-    LiquidCrystal_I2C lcd(0x27, 16, 2);
-    lcd.begin(16, 2);
-    lcd.print("CasaViva IoT");
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+lcd.begin(16, 2);
+lcd.print("CasaViva IoT");
 ```

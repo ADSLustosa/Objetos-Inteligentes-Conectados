@@ -96,14 +96,14 @@ Inclui:
 
 # 🧠 Padrões de Projeto Utilizados
 
-    | Padrão                        | Aplicação              |
-    | ----------------------------- | ---------------------- |
-    | **Publish/Subscribe**         | MQTT                   |
-    | **State Machine**             | Páginas do LCD         |
-    | **Debouncing lógico**         | Joystick               |
-    | **Driver Isolation**          | Abstração de sensores  |
-    | **Event-driven architecture** | Telemetria por gatilho |
-    | **Fail-safe reconnection**    | Wi-Fi e MQTT           |
+| Padrão                        | Aplicação              |
+| ----------------------------- | ---------------------- |
+| **Publish/Subscribe**         | MQTT                   |
+| **State Machine**             | Páginas do LCD         |
+| **Debouncing lógico**         | Joystick               |
+| **Driver Isolation**          | Abstração de sensores  |
+| **Event-driven architecture** | Telemetria por gatilho |
+| **Fail-safe reconnection**    | Wi-Fi e MQTT           |
 
 # 🚀 Possibilidades de Expansão
 

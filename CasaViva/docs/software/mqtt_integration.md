@@ -24,28 +24,28 @@ A comunicação é orientada a eventos. O ESP32 publica periodicamente dados amb
 O projeto utiliza a seguinte estrutura hierárquica:
 
 Publicação (ESP32 → Nuvem)
-    | Tópico                   | Conteúdo                | Tipo  |
-    | ------------------------ | ----------------------- | ----- |
-    | `/CasaViva/temperatura`  | Temperatura atual em °C | float |
-    | `/CasaViva/umidade`      | Umidade relativa (%)    | float |
-    | `/CasaViva/qualidade_ar` | Leitura bruta MQ-135    | int   |
-    | `/CasaViva/ruido`        | Intensidade do som      | int   |
+| Tópico                   | Conteúdo                | Tipo  |
+| ------------------------ | ----------------------- | ----- |
+| `/CasaViva/temperatura`  | Temperatura atual em °C | float |
+| `/CasaViva/umidade`      | Umidade relativa (%)    | float |
+| `/CasaViva/qualidade_ar` | Leitura bruta MQ-135    | int   |
+| `/CasaViva/ruido`        | Intensidade do som      | int   |
 
 Comandos recebidos (Nuvem → ESP32)
-    | Tópico            | Comando          | Ação                       |
-    | ----------------- | ---------------- | -------------------------- |
-    | `/CasaViva/relay` | `"ON"` / `"OFF"` | Liga/desliga o módulo relé |
+| Tópico            | Comando          | Ação                       |
+| ----------------- | ---------------- | -------------------------- |
+| `/CasaViva/relay` | `"ON"` / `"OFF"` | Liga/desliga o módulo relé |
 
 
 # 💬 3. Payloads Padrão
 Exemplo de telemetria enviada pelo ESP32:
 ```
-    {
-    "temperatura": 24.8,
-    "umidade": 58.2,
-    "qualidade_ar": 712,
-    "ruido": 180
-    }
+{
+"temperatura": 24.8,
+"umidade": 58.2,
+"qualidade_ar": 712,
+"ruido": 180
+}
 ```
 
 Exemplo de comando para acionamento:
@@ -57,30 +57,30 @@ Exemplo de comando para acionamento:
 # 🔧 4. Implementação no Firmware
 Configuração do cliente MQTT no ESP32:
 ```
-    client.setServer("broker.hivemq.com", 1883);
-    client.setCallback(mqttCallback);
-    client.connect("CasaVivaESP32");
-    client.subscribe("/CasaViva/relay");
+client.setServer("broker.hivemq.com", 1883);
+client.setCallback(mqttCallback);
+client.connect("CasaVivaESP32");
+client.subscribe("/CasaViva/relay");
 ```
 Publicação:
 
 ```
-    client.publish("/CasaViva/temperatura", String(temp).c_str());
-    client.publish("/CasaViva/umidade",     String(umid).c_str());
+client.publish("/CasaViva/temperatura", String(temp).c_str());
+client.publish("/CasaViva/umidade",     String(umid).c_str());
 ```
 
 Recepção:
 
 ```
-    void mqttCallback(char* topic, byte* payload, unsigned int len) {
-        String msg = "";
-        for (int i = 0; i < len; i++) msg += (char)payload[i];
+void mqttCallback(char* topic, byte* payload, unsigned int len) {
+    String msg = "";
+    for (int i = 0; i < len; i++) msg += (char)payload[i];
 
-        if (String(topic) == "/CasaViva/relay") {
-            if (msg == "ON") digitalWrite(RELAY_PIN, LOW);
-            else digitalWrite(RELAY_PIN, HIGH);
-        }
+    if (String(topic) == "/CasaViva/relay") {
+        if (msg == "ON") digitalWrite(RELAY_PIN, LOW);
+        else digitalWrite(RELAY_PIN, HIGH);
     }
+}
 ```
 
 # 🧪 5. Testes com MQTTX
@@ -88,8 +88,8 @@ Recepção:
 1. Abra o MQTTX
 2. Criar nova conexão:
 ```
-    URL: broker.hivemq.com
-    Porta: 1883
+URL: broker.hivemq.com
+Porta: 1883
 ```
 3. Criar assinaturas:
 ```
@@ -97,8 +97,8 @@ Recepção:
 ```
 4. Publicar comandos:
 ```
-    Topic: /CasaViva/relay
-    Payload: "ON"
+Topic: /CasaViva/relay
+Payload: "ON"
 ```
 
 # ⚙ 6. Boas Práticas de Publicação
