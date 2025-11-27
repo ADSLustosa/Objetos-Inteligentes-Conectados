@@ -291,9 +291,9 @@ Inclui:
 
 # 👥 Autores
 
-    | Nome | RA | Contato |
-    |------|------|---------|
-    | **João Pedro Lima Lustosa Amorim** | 10289920 | joaopedrolima.amorim1@mackenzista.com.br |
-    | **Islas Matheus Coelho Azevedo** | 10423586 | islas.azevedo@mackenzista.com.br |
+| Nome | RA | Contato |
+|------|------|---------|
+| **João Pedro Lima Lustosa Amorim** | 10289920 | joaopedrolima.amorim1@mackenzista.com.br |
+| **Islas Matheus Coelho Azevedo** | 10423586 | islas.azevedo@mackenzista.com.br |
 
 ---
