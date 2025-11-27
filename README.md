@@ -282,10 +282,78 @@ Inclui:
 
 # 📎 Referências
 
-- WHO. *Ambient air pollution guidelines*, 2018.  
-- IPEA. *ODS 3 – Saúde e Bem-Estar no Brasil*, 2022.  
-- SMITH, J. et al. *Indoor environmental quality and health*, 2022.  
-- NEWBURY, R. et al. *Smart home sensing for well-being*, 2024.  
+### 🌱 Saúde, Qualidade Ambiental e ODS 3
+
+- WHO. Ambient air pollution guidelines: global update 2018. Geneva: World Health Organization, 2018. Disponível em: https://www.who.int/.
+
+- IPEA – Instituto de Pesquisa Econômica Aplicada. Objetivo de Desenvolvimento Sustentável 3: Saúde e Bem-Estar. Brasília: IPEA, 2022. Disponível em: https://www.ipea.gov.br/
+
+- SMITH, J.; CARTER, A.; WANG, L. Indoor environmental quality and human health: a comprehensive review. Environmental Health Journal, 2022. Disponível em: https://environmentalhealthjournal.biomedcentral.com/
+
+- NEWBURY, R.; HOFFMAN, L.; BENTON, J. Smart home sensing technologies for well-being. Journal of Ambient Intelligence and Smart Environments, v. 16, p. 1–21, 2024.
+
+### 🔌 Especificações de Sensores e Atuadores
+
+- ADAfruit Industries. DHT22 / AM2302 Temperature-Humidity Sensor Datasheet, 2019. Disponível em: https://cdn-shop.adafruit.com/datasheets/DHT22.pdf
+
+- WINSEN Electronics. MQ-135 Air Quality Sensor Datasheet. Zhengzhou: Winsen, 2018. Disponível em: https://www.winsen-sensor.com/
+
+- KEYESTUDIO. KY-037 High Sensitivity Sound Microphone Sensor Module Specification. 2020. Disponível em: https://wiki.keyestudio.com/
+
+- DFROBOT. Analog Joystick Module V2 Documentation. 2021. Disponível em: https://wiki.dfrobot.com/
+
+- BOURNS. Rotary Potentiometer Datasheet (10kΩ). 2021. Disponível em: https://www.bourns.com/
+
+- HITACHI. HD44780 LCD Controller Datasheet. Tokyo: Hitachi Displays, 2014.
+
+- TEXAS INSTRUMENTS. PCF8574 Remote 8-bit I/O Expander Datasheet, 2016. Disponível em: https://www.ti.com/
+
+- SONGLE. SRD-05VDC-SL-C Relay Module Datasheet, 2018.
+
+### 💻 Frameworks e Ferramentas (ESP32, Arduino, PlatformIO, Wokwi)
+
+- ESPRESSIF Systems. ESP32 Technical Reference Manual. Shanghai: Espressif, 2020. Disponível em: https://docs.espressif.com/
+
+- ARDUINO. Arduino Core for ESP32 Documentation. 2022. Disponível em: https://github.com/espressif/arduino-esp32
+
+- ARDUINO. Arduino IDE Documentation. 2023. Disponível em: https://docs.arduino.cc/
+
+- PLATFORMIO. PlatformIO IoT Development Ecosystem Documentation. 2023. Disponível em: https://docs.platformio.org/
+
+- WOKWI. ESP32 Simulator Documentation. 2023. Disponível em: https://docs.wokwi.com/
+
+### 📡 Protocolos e MQTT
+
+- OASIS. MQTT Version 3.1.1 Specification. 2014. Disponível em: https://mqtt.org/
+
+- HIVEMQ. HiveMQ Public Broker Documentation. 2023. Disponível em: https://www.hivemq.com/
+
+- MQTTX. MQTTX Client Documentation. 2023. Disponível em: https://mqttx.app/
+
+
+### 🎤 Alexa & Arquitetura em Nuvem (AWS)
+
+- AMAZON Web Services. Alexa Smart Home Skill API Reference. Seattle: AWS, 2023. Disponível em: https://developer.amazon.com/en-US/docs/alexa/
+
+- AMAZON Web Services. AWS IoT Core Developer Guide. 2023. Disponível em: https://docs.aws.amazon.com/iot/
+
+- AMAZON Web Services. AWS Lambda Developer Guide. 2023. Disponível em: https://docs.aws.amazon.com/lambda/
+
+
+### 📚 Bibliotecas do Projeto
+
+- KNOLL, N. PubSubClient Library Documentation. 2023. Disponível em: https://github.com/knolleary/pubsubclient
+
+- ADAFRUIT. DHT Sensor Library Documentation. 2022. Disponível em: https://github.com/adafruit/DHT-sensor-library
+
+- RICKMAN, J. LiquidCrystal_I2C Library. 2020. Disponível em: https://github.com/johnrickman/LiquidCrystal_I2C
+
+
+### 📦 Conceitos de IoT e Arquitetura
+
+- GUBBI, J.; BUYYA, R.; MARUSIC, S.; PALANISWAMI, M. Internet of Things (IoT): A vision, architectural elements, and future directions. Future Generation Computer Systems, v. 29, n. 7, p. 1645–1660, 2013.
+
+- PROVAN, K.; VOIDA, A. Embedded Systems: Design Principles and Applications. New York: Springer, 2021.
 
 ---
 
