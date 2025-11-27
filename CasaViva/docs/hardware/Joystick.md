@@ -1,7 +1,7 @@
 # Joystick Analógico – Controle do Sistema
 
 <p align="center">
-  <img src="../assets/Joystick.png" width="260">
+  <img src="../assets/Joystick.jpg" width="260">
 </p>
 
 ## Descrição
